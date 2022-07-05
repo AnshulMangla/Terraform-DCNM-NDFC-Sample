@@ -2,55 +2,42 @@ terraform {
   required_providers {
     dcnm = {
       source = "CiscoDevNet/dcnm"
-      version = "1.0.0"
+      version = "1.2.2"
     }
   }
 }
 
+## DCNM Provider ##
+# provider "dcnm" {
+#     username = "admin"
+#     password = "pwdxxx"
+#     url      = "https://10.X.X.X:8443"
+#     insecure = true
+# }
+
+## NDFC Provider ##
 provider "dcnm" {
     username = "admin"
-    password = "cisco!123"
-    url      = "https://10.106.236.45:8443"
+    password = "pwdxxx"
+    url      = "https://10.X.X.X"
     insecure = true
+    platform = "nd"
 }
 
 resource "dcnm_vrf" "test-vrf" {
   fabric_name = "Test"
-  name = "Anshul_VRF"
+  name = "Test_VRF"
   description = "This vrf is created by terraform"
   deploy = false
 }
 
-
-# resource "dcnm_vrf" "test-vrf" {
-#   fabric_name = "Import_Fabric"
-#   name = "Anshul_VRF"
-#   description = "This vrf is created by terraform"
-#   deploy = false
-# }
-
-# resource "dcnm_network" "first" {
-#   fabric_name     = "Import_Fabric"
-#   name            = "MyNetwork_30002"
-#   network_id      = "30002"
-#   display_name    = "MyNetwork_30002"
-#   description     = "first network from terraform"
-#   vrf_name        = "MyVRF_50000"
-#   vlan_name       = ""
-#   ipv4_gateway    = ""
-#   ipv6_gateway    = ""
-#   secondary_gw_1  = ""
-#   secondary_gw_2  = ""
-#   arp_supp_flag   = false
-#   ir_enable_flag  = false
-#   mcast_group     = "239.1.1.0"
-#   dhcp_1          = ""
-#   dhcp_2          = ""
-#   dhcp_vrf        = ""
-#   tag             = "12345"
-#   rt_both_flag    = false
-#   trm_enable_flag = false
-#   l3_gateway_flag = false
-
-#   deploy = false
-# }
+resource "dcnm_template" "example1" {
+  name = "test"
+  content = file("template.txt")
+  description = "Test"
+  supported_platforms = ["N9K","N3K"]
+  template_type="POLICY"
+  template_content_type="TEMPLATE_CLI"
+  tags="tag1"
+  template_sub_type="VXLAN"
+}
